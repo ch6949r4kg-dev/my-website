@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>By biw shop</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ color:white;
+ background:radial-gradient(circle at top,#502080,#10051c 65%,#05020a);
+ min-height:100vh;
+ overflow-x:hidden
+}
+body:before{
+ content:"";
+ position:fixed;inset:0;pointer-events:none;
+ background-image:radial-gradient(#d9a5ff 1px,transparent 2px);
+ background-size:37px 37px;
+ opacity:.3;
+ animation:glow 5s infinite alternate
+}
+@keyframes glow{from{opacity:.12}to{opacity:.5}}
+header{
+ text-align:center;padding:30px 12px;
+ border-bottom:1px solid #a34cff;
+ box-shadow:0 0 25px #8c35ff
+}
+h1{
+ color:#e7c5ff;
+ text-shadow:0 0 15px #b44dff;
+ font-size:35px;margin:8px
+}
+header p{color:#d9baff}
+.container{max-width:850px;margin:auto;padding:18px}
+.card{
+ background:#1a0b2beF;
+ border:1px solid #9b4bff;
+ border-radius:18px;padding:20px;margin:18px 0;
+ box-shadow:0 0 18px #7927b855
+}
+h2{color:#d8a4ff}
+.products{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:14px
+}
+.product{
+ padding:18px;border:1px solid #8750c9;
+ border-radius:15px;background:linear-gradient(145deg,#32164c,#160923);
+ text-align:center
+}
+.emoji{font-size:42px}
+.price{font-size:27px;color:#e1aaff;font-weight:bold}
+button{
+ border:0;border-radius:10px;padding:12px 18px;
+ background:linear-gradient(90deg,#a32cff,#6420cf);
+ color:white;font-size:16px;font-weight:bold;
+ cursor:pointer;margin-top:8px
+}
+input{
+ width:100%;padding:12px;margin:6px 0;
+ border:1px solid #9d62d9;border-radius:8px;
+ background:#10051b;color:white;font-size:16px
+}
+.small{font-size:13px;color:#d1b9e8;line-height:1.8}
+a{color:#e2b5ff}
+footer{text-align:center;padding:25px;color:#c5a4e8}
+</style>
+</head>
+<body>
+<header>
+ <div style="font-size:45px">🐱 💜 ✨</div>
+ <h1>BY BIW SHOP</h1>
+ <p>ร้านค้าสุดเท่ สีม่วงนีออน ✦ ซื้อขายง่าย ๆ</p>
+</header>
+
+<main class="container">
+ <section class="card">
+  <h2>🌙 ยินดีต้อนรับ</h2>
+  <p>เลือกสินค้าที่ต้องการได้เลยครับ 💜</p>
+  <p>✨ สินค้าราคาประหยัด เริ่มต้นเพียง 6 บาท</p>
+ </section>
+
+ <section class="card">
+  <h2>🛍️ สินค้าของเรา</h2>
+  <div class="products">
+   <div class="product">
+    <div class="emoji">📘</div>
+    <h3>Facebook เปล่า</h3>
+    <p>บัญชี Facebook เปล่า</p>
+    <div class="price">6 THB</div>
+    <button onclick="buy('Facebook เปล่า',6)">เลือกซื้อ</button>
+   </div>
+   <div class="product">
+    <div class="emoji">👥</div>
+    <h3>Facebook เพื่อน 100</h3>
+    <p>Facebook เพื่อน 100</p>
+    <div class="price">20 THB</div>
+    <button onclick="buy('Facebook เพื่อน 100',20)">เลือกซื้อ</button>
+   </div>
+   <div class="product">
+    <div class="emoji">🔐</div>
+    <h3>Facebook เปล่าติดเพจ</h3>
+    <p>มีสองชั้น</p>
+    <div class="price">8 THB</div>
+    <button onclick="buy('Facebook เปล่าติดเพจ มีสองชั้น',8)">เลือกซื้อ</button>
+   </div>
+  </div>
+  <p class="small">หมายเหตุ: ซื้อขายเฉพาะบัญชีที่ผู้ขายมีสิทธิ์โอนให้โดยชอบ และต้องไม่ละเมิดเงื่อนไขของแพลตฟอร์ม</p>
+ </section>
+
+ <section class="card">
+  <h2>💳 เติมเงินเข้าร้าน</h2>
+  <p>ธนาคารกสิกรไทย</p>
+  <p>เลขบัญชี: 231-3-42778-4</p>
+  <p>ชื่อบัญชี: สุนิตรา มุ่งผันกลาง</p>
+  <label>จำนวนเงินที่ต้องการเติม (บาท)</label>
+  <input id="amount" type="number" min="1" placeholder="กรอกจำนวนเงิน">
+  <label>แนบสลิปโอนเงิน</label>
+  <input id="slip" type="file" accept="image/*">
+  <button onclick="sendSlip()">ส่งข้อมูลให้ตรวจสอบ</button>
+  <p class="small">ระบบตัวอย่างนี้ยังไม่ตรวจสอบสลิปหรือเพิ่มยอดเงินอัตโนมัติ กรุณารอผู้ดูแลตรวจสอบก่อน</p>
+ </section>
+
+ <section class="card">
+  <h2>📜 กฎการเคลมสินค้า</h2>
+  <p>⏰ เคลมภายใน 5 ชั่วโมงหลังได้รับสินค้า</p>
+  <p>• หากรหัสผิด คีย์ผิด บัญชีเข้าไม่ได้ หรือบัญชีมีปัญหา ต้องแจ้งทันทีภายในเวลาเคลม</p>
+  <p>• หากพ้นเวลาเคลมแล้ว จะไม่รับเคลม</p>
+  <p>• หากเข้าใช้งานบัญชีแล้วและพบปัญหา ต้องแจ้งทันทีเมื่อเข้าใช้งาน</p>
+  <p>• โปรดตรวจสอบสินค้าทันทีหลังได้รับสินค้า</p>
+ </section>
+
+ <section class="card">
+  <h2>👤 สมัครสมาชิก / เข้าสู่ระบบ</h2>
+  <input id="username" placeholder="ชื่อผู้ใช้">
+  <input id="password" type="password" placeholder="รหัสผ่าน">
+  <button onclick="demoLogin()">เข้าสู่ระบบตัวอย่าง</button>
+  <p id="loginMessage" class="small">ระบบนี้เป็นเพียงตัวอย่าง ยังไม่มีระบบบัญชีผู้ใช้จริง</p>
+ </section>
+
+ <section class="card">
+  <h2>📱 ติดต่อร้าน</h2>
+  <p>LINE: @282ppxul</p>
+  <a href="https://line.me/R/ti/p/%40282ppxul" target="_blank">กดเพิ่มเพื่อน LINE</a>
+ </section>
+
+ <section class="card">
+  <h2>🛠️ เจ้าของร้าน</h2>
+  <p>เพิ่มสินค้าได้ผ่านการแก้ไขโค้ดในส่วนสินค้าของเรา</p>
+  <p class="small">การจัดการสินค้าแบบบันทึกถาวรต้องเชื่อมต่อระบบหลังบ้าน</p>
+ </section>
+</main>
+
+<footer>© By biw shop 💜 All rights reserved.</footer>
+
+<script>
+function buy(name,price){
+ alert('คุณเลือก '+name+' ราคา '+price+
+ ' บาท\\nกรุณาติดต่อร้านเพื่อสั่งซื้อ\\nLINE: @282ppxul');
+}
+function sendSlip(){
+ const amount=Number(document.getElementById('amount').value);
+ const slip=document.getElementById('slip').files[0];
+ if(!amount||amount<1){
+  alert('กรุณากรอกจำนวนเงินให้ถูกต้อง');return;
+ }
+ if(!slip){alert('กรุณาแนบสลิป');return;}
+ alert('รับข้อมูลตัวอย่างแล้ว กรุณาติดต่อผู้ดูแล LINE: @282ppxul เพื่อให้ตรวจสอบสลิป\\nยังไม่มีการเพิ่มยอดเงินอัตโนมัติ');
+}
+function demoLogin(){
+ const u=document.getElementById('username').value.trim();
+ const p=document.getElementById('password').value;
+ if(!u||!p){alert('กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');return;}
+ document.getElementById('loginMessage').textContent=
+ 'ทดลองกรอกข้อมูลแล้ว แต่ยังไม่ได้เข้าสู่ระบบจริง กรุณาเชื่อมต่อระบบสมาชิกก่อนเปิดใช้งาน';
+}
+</script>
+</body>
+</html>
