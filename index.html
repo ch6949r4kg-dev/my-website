@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10051f">
+<title>By biw shop | Purple Store</title>
+
+<style>
+:root {
+  --bg:#090411;
+  --panel:#170b27;
+  --purple:#a855f7;
+  --pink:#ec7cff;
+  --text:#f8efff;
+  --muted:#c4aedb;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--text);
+  font-family:system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(ellipse at top,#35105c 0%,transparent 45%),
+    linear-gradient(150deg,#090411,#150724 55%,#080310);
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background-image:
+    radial-gradient(#e5b2ff 1px,transparent 1.5px),
+    radial-gradient(#9b4dff 2px,transparent 3px);
+  background-size:47px 47px,91px 91px;
+  animation:stars 12s linear infinite;
+}
+@keyframes stars{
+  from{background-position:0 0,20px 40px}
+  to{background-position:0 300px,120px 220px}
+}
+header{
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;
+  padding:14px 5%;
+  background:#10051fee;
+  border-bottom:1px solid #a855f7;
+  box-shadow:0 0 25px #8b2bda44;
+  backdrop-filter:blur(14px);
+}
+.logo{
+  color:#f0c8ff;font-weight:900;font-size:23px;
+  text-shadow:0 0 15px #bf5cff;
+}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{
+  color:#eadbff;text-decoration:none;font-size:13px;
+}
+nav a:hover{color:#f4a8ff}
+button,.btn{
+  display:inline-block;border:1px solid #d28aff;
+  padding:11px 17px;border-radius:12px;
+  color:white;text-decoration:none;font-weight:750;
+  background:linear-gradient(110deg,#8528d8,#5015a0);
+  box-shadow:0 0 15px #9b4dff30;
+  cursor:pointer;transition:.2s;
+}
+button:hover,.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 24px #c75cff88;
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.hero{
+  text-align:center;padding:65px 18px 48px;
+}
+.mascot{font-size:65px;filter:drop-shadow(0 0 18px #bd63ff)}
+.hero h1{
+  margin:8px 0;font-size:clamp(38px,8vw,68px);
+  color:#f0c9ff;
+  text-shadow:0 0 10px #c45aff,0 0 35px #8927ff;
+}
+.hero p{color:var(--muted);line-height:1.9}
+.tag{
+  display:inline-block;padding:7px 14px;border-radius:30px;
+  border:1px solid #a855f7;color:#e9c8ff;font-size:12px;
+}
+.container{width:min(1050px,92%);margin:auto}
+.section{padding:25px 0 40px;scroll-margin-top:100px}
+.section-title{
+  font-size:24px;color:#e5b6ff;
+  text-shadow:0 0 12px #a855f7;
+  margin-bottom:20px;
+}
+.panel{
+  background:linear-gradient(145deg,#211033ed,#100719f5);
+  border:1px solid #7132a5;border-radius:19px;
+  padding:21px;box-shadow:0 0 22px #a855f71c;
+}
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:17px;
+}
+.product{
+  position:relative;overflow:hidden;text-align:center;
+  background:linear-gradient(145deg,#29113e,#10071b);
+  border:1px solid #9d4de8;border-radius:19px;padding:22px 17px;
+  box-shadow:inset 0 0 20px #9c4dff12,0 0 16px #9c4dff18;
+}
+.product:before{
+  content:"";position:absolute;top:-50px;left:-50px;
+  width:100px;height:100px;border-radius:50%;
+  background:#be68ff33;filter:blur(25px);
+}
+.product-icon{
+  font-size:57px;margin:5px;
+  filter:drop-shadow(0 0 12px #b55aff);
+}
+.product h3{font-size:18px}
+.product p{font-size:13px;color:var(--muted);min-height:22px}
+.price{font-size:29px;font-weight:900;color:#f1a7ff;margin:14px}
+.price small{font-size:12px}
+.full{width:100%}
+.split{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:18px;
+}
+input{
+  display:block;width:100%;padding:12px;margin:8px 0 15px;
+  background:#0b0613;border:1px solid #724098;
+  border-radius:10px;color:white;font-size:15px;
+}
+input:focus{outline:1px solid #d17cff}
+label{font-size:13px;color:#e2c8f8}
+.muted{font-size:13px;color:var(--muted);line-height:1.9}
+.rules li{margin:12px 0;line-height:1.8}
+.bank{
+  background:#10091a;border:1px solid #69418b;
+  border-radius:12px;padding:15px;margin:14px 0;
+}
+.bank strong{color:#e8b9ff}
+footer{
+  text-align:center;padding:30px 15px;color:#bba2d6;
+  border-top:1px solid #48245e;font-size:13px;
+}
+.notice{
+  border-left:3px solid #c66bff;
+  padding:10px 13px;background:#a855f711;
+  color:#dec9f4;font-size:12px;line-height:1.8;
+}
+#loginStatus,#topupStatus{font-size:13px;line-height:1.8}
+@media(max-width:500px){
+  header{justify-content:center}
+  nav{justify-content:center;gap:12px}
+  .hero{padding-top:40px}
+  .panel{padding:16px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">♛ By biw shop 💜</div>
+  <nav>
+    <a href="#home">หน้าแรก</a>
+    <a href="#products">สินค้า</a>
+    <a href="#topup">เติมเงิน</a>
+    <a href="#rules">กฎเคลม</a>
+    <a href="#contact">ติดต่อ</a>
+  </nav>
+  <a class="btn" href="#account">เข้าสู่ระบบ</a>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="mascot">🐈‍⬛ ✦ 💜</div>
+  <span class="tag">WELCOME TO OUR STORE</span>
+  <h1>By biw shop</h1>
+  <p>ร้านค้าธีมม่วงนีออน ✧ เลือกชมสินค้าได้เลย ✧</p>
+  <a class="btn" href="#products">🛍️ เลือกซื้อสินค้า</a>
+</section>
+
+<div class="container">
+<section class="section" id="products">
+  <h2 class="section-title">✦ สินค้าแนะนำ</h2>
+  <div class="products">
+
+    <article class="product">
+      <div class="product-icon">📘</div>
+      <h3>Facebook เปล่า</h3>
+      <p>สินค้า Facebook ตามรายละเอียดร้าน</p>
+      <div class="price">6 <small>THB</small></div>
+      <button class="full" onclick="buy('Facebook เปล่า',6)">
+        🛒 เลือกซื้อ
+      </button>
+    </article>
+
+    <article class="product">
+      <div class="product-icon">👥</div>
+      <h3>Facebook เพื่อน 100</h3>
+      <p>สินค้าตามรายละเอียดที่ระบุ</p>
+      <div class="price">20 <small>THB</small></div>
+      <button class="full" onclick="buy('Facebook เพื่อน 100',20)">
+        🛒 เลือกซื้อ
+      </button>
+    </article>
+
+    <article class="product">
+      <div class="product-icon">🔐</div>
+      <h3>Facebook เปล่าติดเพจ</h3>
+      <p>มีสองชั้น</p>
+      <div class="price">8 <small>THB</small></div>
+      <button class="full" onclick="buy('Facebook เปล่าติดเพจ มีสองชั้น',8)">
+        🛒 เลือกซื้อ
+      </button>
+    </article>
+
+  </div>
+  <p class="muted">สินค้าดิจิทัลต้องมีสิทธิ์จำหน่ายและโอนให้โดยชอบด้วยกฎหมายและข้อกำหนดของแพลตฟอร์ม</p>
+</section>
+
+<section class="section split">
+  <div class="panel" id="rules">
+    <h2 class="section-title">⏰ กฎการเคลมสินค้า</h2>
+    <ul class="rules">
+      <li>เคลมภายใน <strong>5 ชั่วโมง</strong> หลังได้รับสินค้า</li>
+      <li>หากรหัสผิด คีย์ผิด บัญชีเข้าไม่ได้ หรือพบปัญหา ต้องแจ้งร้านทันทีภายในเวลาเคลม</li>
+      <li>หากพ้นเวลาเคลมแล้ว จะไม่รับเคลมตามเงื่อนไขร้าน</li>
+      <li>หากเข้าใช้งานแล้วพบปัญหา ต้องแจ้งทันทีเมื่อเข้าใช้งาน</li>
+    </ul>
+    <div class="notice">
+      โปรดตรวจสอบสินค้าทันทีหลังได้รับสินค้า เงื่อนไขการเคลมต้องแจ้งอย่างชัดเจนก่อนชำระเงิน
+    </div>
+  </div>
+
+  <div class="panel" id="topup">
+    <h2 class="section-title">💳 ช่องทางเติมเงิน</h2>
+    <p>ธนาคารกสิกรไทย</p>
+    <div class="bank">
+      <p>ชื่อบัญชี: <strong>สุนิตรา มุ่งผันกลาง</strong></p>
+      <p>เลขบัญชี: <strong>231-3-42778-4</strong></p>
+    </div>
+
+    <label for="amount">จำนวนเงินที่ต้องการเติม (บาท)</label>
+    <input id="amount" type="number" min="1" placeholder="เช่น 100">
+
+    <label for="slip">แนบสลิปโอนเงิน</label>
+    <input id="slip" type="file" accept="image/*">
+
+    <button class="full" onclick="submitTopup()">ส่งข้อมูลเติมเงิน</button>
+    <p id="topupStatus" class="muted"></p>
+    <div class="notice">
+      การส่งฟอร์มนี้ยังไม่ใช่การยืนยันสลิปหรือเพิ่มยอดเงินจริง
+      กรุณารอผู้ดูแลตรวจสอบการโอนก่อน
+    </div>
+  </div>
+</section>
+
+<section class="section split">
+  <div class="panel" id="account">
+    <h2 class="section-title">👤 สมัครสมาชิก / เข้าสู่ระบบ</h2>
+    <label for="username">ชื่อผู้ใช้</label>
+    <input id="username" autocomplete="username" placeholder="กรอกชื่อผู้ใช้">
+
+    <label for="password">รหัสผ่าน</label>
+    <input id="password" type="password" autocomplete="current-password"
+      placeholder="กรอกรหัสผ่าน">
+
+    <button class="full" onclick="demoLogin()">เข้าสู่ระบบตัวอย่าง</button>
+    <p id="loginStatus" class="muted">
+      ระบบสมาชิกยังไม่เปิดใช้งานจริง
+    </p>
+    <div class="notice">
+      อย่าใช้รหัสผ่านจริงในหน้าเว็บตัวอย่างนี้
+      ระบบจริงต้องมีเซิร์ฟเวอร์และระบบจัดเก็บรหัสผ่านที่ปลอดภัย
+    </div>
+  </div>
+
+  <div class="panel" id="contact">
+    <h2 class="section-title">💬 ติดต่อร้าน</h2>
+    <div class="mascot" style="font-size:48px">🐰 💜</div>
+    <p>สอบถามสินค้าและแจ้งปัญหากับร้าน</p>
+    <p><strong>LINE ID: @282ppxul</strong></p>
+    <a class="btn" href="https://line.me/R/ti/p/%40282ppxul"
+       target="_blank" rel="noopener">
+       เพิ่มเพื่อน LINE
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="panel">
+    <h2 class="section-title">✨ เกี่ยวกับร้าน</h2>
+    <p>ยินดีต้อนรับสู่ By biw shop</p>
+    <p class="muted">
+      เว็บไซต์ธีมม่วงเข้มสำหรับแสดงสินค้า รายละเอียดการชำระเงิน
+      เงื่อนไขการเคลม และช่องทางติดต่อร้าน
+    </p>
+  </div>
+</section>
+</div>
+</main>
+
+<footer>
+  <div style="font-size:27px">🐈‍⬛ 💜 ✦</div>
+  <p>© 2026 By biw shop</p>
+  <p>Thank you for visiting our store</p>
+</footer>
+
+<script>
+function buy(name,price){
+  const ok=confirm(
+    'สินค้า: '+name+
+    '\nราคา: '+price+' บาท'+
+    '\n\nต้องมีระบบสมาชิกและตรวจสอบยอดเงินก่อนซื้อจริง'+
+    '\nต้องการติดต่อร้านทาง LINE หรือไม่?'
+  );
+  if(ok){
+    window.open(
+      'https://line.me/R/ti/p/%40282ppxul',
+      '_blank','noopener'
+    );
+  }
+}
+
+function submitTopup(){
+  const amount=Number(document.getElementById('amount').value);
+  const file=document.getElementById('slip').files[0];
+  const status=document.getElementById('topupStatus');
+
+  if(!Number.isFinite(amount)||amount<1){
+    status.textContent='กรุณากรอกจำนวนเงินให้ถูกต้อง';
+    return;
+  }
+  if(!file){
+    status.textContent='กรุณาเลือกไฟล์สลิป';
+    return;
+  }
+  if(!file.type.startsWith('image/')){
+    status.textContent='กรุณาเลือกไฟล์รูปภาพ';
+    return;
+  }
+
+  status.textContent=
+    'ตรวจสอบข้อมูลเบื้องต้นแล้ว แต่ยังไม่ได้ส่งสลิปไปยังเซิร์ฟเวอร์ '+
+    'และยังไม่มีการเพิ่มยอดเงิน กรุณาติดต่อผู้ดูแล LINE: @282ppxul';
+}
+
+function demoLogin(){
+  const username=document.getElementById('username').value.trim();
+  const password=document.getElementById('password').value;
+  const status=document.getElementById('loginStatus');
+
+  if(!username||!password){
+    status.textContent='กรุณากรอกชื่อผู้ใช้และรหัสผ่านเพื่อทดลอง';
+    return;
+  }
+
+  status.textContent=
+    'นี่เป็นเพียงหน้าเว็บตัวอย่าง ยังไม่มีระบบสมัครสมาชิกหรือล็อกอินจริง '+
+    'โปรดอย่าใช้รหัสผ่านจริง';
+}
+</script>
+</body>
+</html>
