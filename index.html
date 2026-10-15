@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>By biw shop | Purple Store</title>
+<style>
+:root {
+  --bg:#10051b;
+  --panel:#1c0b2b;
+  --pink:#ff65df;
+  --purple:#a855f7;
+  --text:#fbeaff;
+}
+* { box-sizing:border-box }
+body {
+  margin:0; color:var(--text);
+  font-family:system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,#57208066,transparent 30%),
+    radial-gradient(circle at 90% 40%,#a42e9160,transparent 25%),
+    var(--bg);
+}
+header {
+  position:sticky;top:0;z-index:5;
+  padding:18px 14px;
+  text-align:center;
+  background:#12061af2;
+  border-bottom:1px solid var(--purple);
+  box-shadow:0 0 22px #a855f766;
+}
+.logo {
+  font-size:clamp(24px,5vw,36px);
+  font-weight:900;color:#ffc5ff;
+  text-shadow:0 0 9px #ff42dc,0 0 24px #a855f7;
+}
+nav {
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:8px;margin-top:14px;
+}
+button,.navbtn {
+  border:1px solid #d879ff;
+  border-radius:13px;padding:11px 15px;
+  background:linear-gradient(135deg,#9228d7,#51149a);
+  color:white;font-weight:750;font-size:14px;
+  cursor:pointer;
+  box-shadow:0 0 12px #a855f744;
+}
+button:hover,.navbtn:hover {
+  filter:brightness(1.2);
+  box-shadow:0 0 20px #ff65df99;
+}
+button:active { transform:scale(.98) }
+button:disabled { opacity:.5;cursor:not-allowed }
+main {max-width:1050px;margin:auto;padding:20px 14px}
+.hero {
+  text-align:center;padding:32px 15px;
+  border:1px solid var(--purple);border-radius:24px;
+  background:linear-gradient(140deg,#35114c,#170822);
+  box-shadow:0 0 24px #9228d744,inset 0 0 20px #ff65df12;
+}
+.hero h1 {font-size:clamp(27px,6vw,43px);margin:8px 0}
+.hero p {color:#e5c7f5;line-height:1.8}
+.mascot {font-size:58px;filter:drop-shadow(0 0 12px #ff65df)}
+.section-title {
+  margin:30px 0 15px;
+  color:#ffb9f4;text-shadow:0 0 12px #a855f7;
+}
+.products {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+.card,.panel {
+  background:linear-gradient(145deg,#281039,#170821);
+  border:1px solid #a855f7;border-radius:19px;
+  padding:20px;
+  box-shadow:0 0 15px #a855f733,inset 0 0 14px #ff65df0b;
+}
+.card {text-align:center}
+.product-icon {font-size:52px;margin:8px}
+.card h3 {margin:8px 0}
+.desc {color:#cdb3df;font-size:14px;min-height:42px}
+.price {font-size:28px;font-weight:900;color:#ff80e6;margin:15px}
+.card button {width:100%}
+.columns {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:15px;margin-top:25px;
+}
+input,textarea {
+  width:100%;padding:13px;margin:7px 0 13px;
+  border-radius:11px;border:1px solid #9650c6;
+  color:white;background:#100719;font:inherit;
+}
+label {font-size:14px;color:#e9d0f8}
+.small {font-size:13px;color:#c8afd8;line-height:1.8}
+.status {padding:12px;border-radius:10px;background:#311342;margin-top:12px}
+footer {text-align:center;padding:28px 12px;color:#cdb3df}
+a {color:#ff9bea}
+#toast {
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#38134b;border:1px solid #ff65df;
+  border-radius:12px;padding:12px 18px;z-index:20;
+  width:max-content;max-width:90%;display:none;
+  box-shadow:0 0 18px #a855f766;
+}
+dialog {
+  background:#1b0a29;color:white;
+  border:1px solid #e879f9;border-radius:20px;
+  width:min(420px,92%);padding:23px;
+  box-shadow:0 0 35px #a855f799;
+}
+dialog::backdrop {background:#08020dcc}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">♛ By biw shop 💜</div>
+  <div class="small">✦ ร้านค้าน่ารัก โทนม่วงชมพู ✦</div>
+  <nav>
+    <button onclick="go('home')">⌂ หน้าแรก</button>
+    <button onclick="go('products')">สินค้า</button>
+    <button onclick="go('topup')">เติมเงิน</button>
+    <button onclick="go('rules')">กฎเคลม</button>
+    <button onclick="go('contact')">ติดต่อ</button>
+    <button onclick="openAuth()">👤 เข้าสู่ระบบ</button>
+  </nav>
+  <div class="small" id="account">ยังไม่ได้เข้าสู่ระบบ</div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="mascot">🐈‍⬛ 🎀 🐈</div>
+    <h1>Welcome to By biw shop</h1>
+    <p>♡ ร้านค้าสีม่วงสุดน่ารัก พร้อมแสงนีออน ♡<br>
+    สมัครสมาชิกก่อนสั่งซื้อสินค้า</p>
+    <button onclick="go('products')">🛍️ เลือกดูสินค้า</button>
+  </section>
+
+  <section id="products">
+    <h2 class="section-title">✧ สินค้าแนะนำ ✧</h2>
+    <div class="products">
+      <article class="card">
+        <div class="product-icon">💜</div>
+        <h3>Facebook เปล่า</h3>
+        <p class="desc">สินค้า Facebook ตามรายละเอียดร้าน</p>
+        <div class="price">6 THB</div>
+        <button onclick="buy(0)">🛒 สั่งซื้อ</button>
+      </article>
+      <article class="card">
+        <div class="product-icon">💗</div>
+        <h3>Facebook เพื่อน 100</h3>
+        <p class="desc">สินค้า Facebook ตามรายละเอียดร้าน</p>
+        <div class="price">20 THB</div>
+        <button onclick="buy(1)">🛒 สั่งซื้อ</button>
+      </article>
+      <article class="card">
+        <div class="product-icon">🌸</div>
+        <h3>Facebook เปล่าติดเพจ มีสองชั้น</h3>
+        <p class="desc">ตรวจสอบรายละเอียดสินค้าก่อนสั่งซื้อ</p>
+        <div class="price">8 THB</div>
+        <button onclick="buy(2)">🛒 สั่งซื้อ</button>
+      </article>
+    </div>
+    <p class="small">หมายเหตุ: ปุ่มสั่งซื้อในตัวอย่างจะสร้างคำสั่งซื้อรอตรวจสอบเท่านั้น ยังไม่มีการส่งมอบสินค้าอัตโนมัติ</p>
+  </section>
+
+  <div class="columns">
+    <section class="panel" id="topup">
+      <h2 class="section-title">💳 เติมเงิน</h2>
+      <p>ธนาคารกสิกรไทย</p>
+      <p>เลขบัญชี <strong id="bank">231-3-42778-4</strong></p>
+      <p>ชื่อบัญชี สุนิตรา มุ่งผันกลาง</p>
+      <button onclick="copyBank()">📋 คัดลอกเลขบัญชี</button>
+      <p class="small">โอนเงินแล้วส่งสลิปให้ร้านตรวจสอบ ยอดเงินจะเพิ่มหลังยืนยันการรับเงินจริงเท่านั้น</p>
+      <label for="amount">จำนวนเงินที่โอน (บาท)</label>
+      <input id="amount" type="number" min="1" placeholder="กรอกจำนวนเงิน">
+      <label for="slip">แนบสลิป (ภาพ)</label>
+      <input id="slip" type="file" accept="image/*">
+      <button onclick="submitTopup()">ส่งรายการให้ตรวจสอบ</button>
+      <div class="status" id="topupStatus">สถานะ: ยังไม่มีรายการเติมเงิน</div>
+    </section>
+
+    <section class="panel" id="rules">
+      <h2 class="section-title">⏰ กฎการเคลม</h2>
+      <p>💗 เคลมภายใน 5 ชั่วโมง (เข้าตรวจสอบภายในเวลาที่กำหนด)</p>
+      <p>💗 หากมีปัญหา เช่น รหัสผิด คีย์ผิด หรือสินค้าใช้งานไม่ได้ หลังหมดเวลาไม่รับเคลม</p>
+      <p>💗 หากเข้าใช้งานสินค้าไปแล้ว ให้ตรวจสอบทันทีเมื่อได้รับสินค้า</p>
+      <p>💗 หากพบปัญหา แจ้งร้านทันทีตอนเข้าใช้งาน</p>
+      <p class="small">โปรดอ่านรายละเอียดสินค้าและเงื่อนไขก่อนสั่งซื้อ และปฏิบัติตามข้อกำหนดของแพลตฟอร์มที่เกี่ยวข้อง</p>
+    </section>
+
+    <section class="panel" id="contact">
+      <h2 class="section-title">💬 ติดต่อร้าน</h2>
+      <p>LINE ID: <strong>@282ppxul</strong></p>
+      <button onclick="copyLine()">📋 คัดลอก LINE ID</button>
+      <p class="small">หากมีปัญหาเรื่องสินค้า หรือเติมเงิน กรุณาติดต่อร้านพร้อมหลักฐานรายการ</p>
+    </section>
+
+    <section class="panel">
+      <h2 class="section-title">👛 คำสั่งซื้อของฉัน</h2>
+      <div id="orders" class="small">เข้าสู่ระบบเพื่อดูรายการในเซสชันนี้</div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="mascot">🐈‍⬛ 💜 🐈</div>
+  <strong>By biw shop</strong>
+  <p>ขอบคุณที่แวะมาอุดหนุนค่ะ ♡</p>
+</footer>
+
+<dialog id="auth">
+  <h2 id="authTitle">👤 เข้าสู่ระบบ</h2>
+  <label for="username">ชื่อผู้ใช้</label>
+  <input id="username" autocomplete="username" placeholder="ชื่อผู้ใช้">
+  <label for="password">รหัสผ่าน</label>
+  <input id="password" type="password" autocomplete="current-password" placeholder="รหัสผ่าน">
+  <button onclick="login()">เข้าสู่ระบบตัวอย่าง</button>
+  <button onclick="register()">สมัครสมาชิกตัวอย่าง</button>
+  <button onclick="auth.close()">ปิด</button>
+  <p class="small">โหมดตัวอย่างเท่านั้น บัญชีจะอยู่ในหน้านี้ชั่วคราว ไม่ได้สร้างบัญชีจริงบนเซิร์ฟเวอร์</p>
+</dialog>
+
+<div id="toast" role="status"></div>
+
+<script>
+const products = [
+  {name:"Facebook เปล่า",price:6},
+  {name:"Facebook เพื่อน 100",price:20},
+  {name:"Facebook เปล่าติดเพจ มีสองชั้น",price:8}
+];
+
+let currentUser = "";
+let demoUsers = {};
+let balance = 0;
+let orders = [];
+
+function toast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(()=>el.style.display="none",3000);
+}
+function go(id) {
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
+}
+function openAuth() {
+  document.getElementById("auth").showModal();
+}
+function register() {
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value;
+  if (u.length < 3 || p.length < 6) {
+    toast("ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัว และรหัสผ่าน 6 ตัว");
+    return;
+  }
+  if (demoUsers[u]) {
+    toast("ชื่อผู้ใช้นี้มีในตัวอย่างแล้ว");
+    return;
+  }
+  demoUsers[u] = p;
+  currentUser = u;
+  updateAccount();
+  document.getElementById("auth").close();
+  toast("สมัครตัวอย่างสำเร็จ");
+}
+function login() {
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value;
+  if (!demoUsers[u] || demoUsers[u] !== p) {
+    toast("ไม่พบผู้ใช้ตัวอย่าง กรุณาสมัครก่อน");
+    return;
+  }
+  currentUser = u;
+  updateAccount();
+  document.getElementById("auth").close();
+  toast("เข้าสู่ระบบตัวอย่างแล้ว");
+}
+function updateAccount() {
+  document.getElementById("account").textContent =
+    currentUser ? "👤 "+currentUser+" | ยอดตัวอย่าง "+balance+" THB" :
+    "ยังไม่ได้เข้าสู่ระบบ";
+  renderOrders();
+}
+function buy(index) {
+  if (!currentUser) {
+    toast("กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อน");
+    openAuth();
+    return;
+  }
+  const item = products[index];
+  if (balance < item.price) {
+    toast("ยอดตัวอย่างไม่พอ กรุณาเติมเงินและรอการตรวจสอบ");
+    go("topup");
+    return;
+  }
+  toast("ระบบนี้ยังไม่ตัดยอดหรือยืนยันคำสั่งซื้อจริง");
+}
+function submitTopup() {
+  if (!currentUser) {
+    toast("กรุณาเข้าสู่ระบบก่อนส่งรายการ");
+    openAuth();
+    return;
+  }
+  const amount = Number(document.getElementById("amount").value);
+  const slip = document.getElementById("slip").files[0];
+  if (!Number.isFinite(amount) || amount <= 0 || !slip) {
+    toast("กรอกจำนวนเงินและแนบสลิปก่อน");
+    return;
+  }
+  document.getElementById("topupStatus").textContent =
+    "ส่งรายการแล้ว: "+amount+" บาท — รอผู้ดูแลตรวจสอบ ยังไม่เพิ่มยอดเงิน";
+  toast("บันทึกสถานะตัวอย่างแล้ว");
+}
+function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(()=>toast("คัดลอกแล้ว"))
+      .catch(()=>toast("คัดลอกไม่สำเร็จ กรุณาคัดลอกด้วยตนเอง: "+text));
+  } else {
+    toast("กรุณาคัดลอกด้วยตนเอง: "+text);
+  }
+}
+function copyBank() { copyText("231-3-42778-4"); }
+function copyLine() { copyText("@282ppxul"); }
+function renderOrders() {
+  document.getElementById("orders").textContent = currentUser
+    ? "ยังไม่มีคำสั่งซื้อที่ยืนยันแล้ว"
+    : "กรุณาเข้าสู่ระบบ";
+}
+</script>
+</body>
+</html>
