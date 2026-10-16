@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>By biw shop</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #10051e;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 25px 12px;
+  background: linear-gradient(135deg, #7200ff, #ff1493);
+  box-shadow: 0 0 20px #d000ff;
+}
+
+header h1 {
+  margin: 0 0 8px;
+}
+
+header p {
+  margin: 0;
+}
+
+.wallet {
+  margin: 18px auto;
+  padding: 15px;
+  max-width: 900px;
+  width: calc(100% - 24px);
+  border: 1px solid #d000ff;
+  border-radius: 12px;
+  background: #1c0b30;
+  text-align: center;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  max-width: 1100px;
+  padding: 12px;
+  margin: auto;
+}
+
+.card {
+  background: #211033;
+  border: 1px solid #a100ff;
+  border-radius: 15px;
+  padding: 16px;
+  box-shadow: 0 0 12px #7100a8;
+}
+
+.product-image {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b1265, #9b176d);
+  font-size: 55px;
+}
+
+.card h3 {
+  margin-bottom: 8px;
+}
+
+.price {
+  color: #ff72d2;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.stock {
+  color: #73ffae;
+  margin: 10px 0;
+}
+
+.quantity {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.quantity button {
+  width: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: #a000ff;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.quantity input {
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #bd63ff;
+  background: #10051e;
+  color: white;
+  font-size: 17px;
+}
+
+.total {
+  margin: 12px 0;
+}
+
+.buy {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #8700ff, #ff1493);
+  border: 0;
+  border-radius: 9px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.buy:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+h2 {
+  text-align: center;
+}
+
+#message {
+  text-align: center;
+  padding: 15px;
+  color: #ff9de3;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #cbb5e9;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💜 By biw shop 💗</h1>
+  <p>ร้านค้าออนไลน์ Neon Purple & Pink</p>
+</header>
+
+<div class="wallet">
+  💰 ยอดเงินในเว็บ:
+  <strong id="balance">100.00</strong> บาท
+  <p style="font-size:13px;color:#cbb5e9">
+    ตัวอย่างระบบทดลอง ยอดเงินยังไม่ใช่เงินจริง
+  </p>
+</div>
+
+<h2>🛍️ สินค้าทั้งหมด</h2>
+
+<div class="products" id="products"></div>
+
+<div id="message"></div>
+
+<h2>📦 รายการสั่งซื้อ</h2>
+<div id="orders" style="text-align:center;padding:10px">
+  ยังไม่มีรายการสั่งซื้อ
+</div>
+
+<footer>
+  © 2026 By biw shop
+</footer>
+
+<script>
+const products = [
+  {
+    id: 1,
+    name: "Facebook เปล่า",
+    price: 6,
+    stock: 50,
+    image: "📘"
+  },
+  {
+    id: 2,
+    name: "Facebook เพื่อน 100",
+    price: 20,
+    stock: 30,
+    image: "👥"
+  },
+  {
+    id: 3,
+    name: "Facebook เปล่าติดเพจ มีสองชั้น",
+    price: 8,
+    stock: 25,
+    image: "📱"
+  }
+];
+
+let balance = 100;
+let orders = [];
+
+function renderProducts() {
+  const container = document.getElementById("products");
+
+  container.innerHTML = products.map(product => `
+    <div class="card">
+      <div class="product-image">${product.image}</div>
+
+      <h3>${product.name}</h3>
+
+      <div class="price">
+        ${product.price.toFixed(2)} บาท / ชิ้น
+      </div>
+
+      <div class="stock" id="stock-${product.id}">
+        📦 คงเหลือ ${product.stock} ชิ้น
+      </div>
+
+      <label for="qty-${product.id}">จำนวนที่ต้องการซื้อ</label>
+
+      <div class="quantity">
+        <button type="button"
+          onclick="changeQty(${product.id}, -1)">−</button>
+
+        <input
+          id="qty-${product.id}"
+          type="number"
+          min="1"
+          max="${product.stock}"
+          value="1"
+          onchange="validateQty(${product.id})"
+          oninput="updateTotal(${product.id})">
+
+        <button type="button"
+          onclick="changeQty(${product.id}, 1)">+</button>
+      </div>
+
+      <div class="total">
+        ราคารวม:
+        <strong id="total-${product.id}">
+          ${product.price.toFixed(2)}
+        </strong> บาท
+      </div>
+
+      <button class="buy"
+        id="buy-${product.id}"
+        onclick="buyProduct(${product.id})"
+        ${product.stock < 1 ? "disabled" : ""}>
+        ${product.stock < 1 ? "สินค้าหมด" : "🛒 ยืนยันซื้อ"}
+      </button>
+    </div>
+  `).join("");
+}
+
+function changeQty(id, amount) {
+  const product = products.find(p => p.id === id);
+  const input = document.getElementById(`qty-${id}`);
+
+  let qty = Number(input.value) || 1;
+  qty += amount;
+
+  qty = Math.max(1, Math.min(qty, product.stock || 1));
+  input.value = qty;
+
+  updateTotal(id);
+}
+
+function validateQty(id) {
+  const product = products.find(p => p.id === id);
+  const input = document.getElementById(`qty-${id}`);
+
+  let qty = Math.floor(Number(input.value) || 1);
+  qty = Math.max(1, Math.min(qty, product.stock || 1));
+
+  input.value = qty;
+  updateTotal(id);
+}
+
+function updateTotal(id) {
+  const product = products.find(p => p.id === id);
+  const input = document.getElementById(`qty-${id}`);
+
+  const qty = Math.max(0, Math.floor(Number(input.value) || 0));
+  const total = qty * product.price;
+
+  document.getElementById(`total-${id}`).textContent =
+    total.toFixed(2);
+}
+
+function buyProduct(id) {
+  const product = products.find(p => p.id === id);
+  const qty = Math.floor(
+    Number(document.getElementById(`qty-${id}`).value)
+  );
+
+  if (!Number.isInteger(qty) || qty < 1) {
+    alert("กรุณาใส่จำนวนสินค้าให้ถูกต้อง");
+    return;
+  }
+
+  if (qty > product.stock) {
+    alert("สินค้าในสต็อกไม่เพียงพอ");
+    return;
+  }
+
+  const total = qty * product.price;
+
+  if (total > balance) {
+    alert("ยอดเงินไม่เพียงพอ กรุณาเติมเงิน");
+    return;
+  }
+
+  const confirmed = confirm(
+    `ยืนยันคำสั่งซื้อ\n` +
+    `สินค้า: ${product.name}\n` +
+    `จำนวน: ${qty} ชิ้น\n` +
+    `ราคารวม: ${total.toFixed(2)} บาท`
+  );
+
+  if (!confirmed) return;
+
+  balance -= total;
+  product.stock -= qty;
+
+  orders.unshift({
+    name: product.name,
+    qty: qty,
+    total: total
+  });
+
+  document.getElementById("balance").textContent =
+    balance.toFixed(2);
+
+  document.getElementById(`stock-${id}`).textContent =
+    `📦 คงเหลือ ${product.stock} ชิ้น`;
+
+  const input = document.getElementById(`qty-${id}`);
+  input.max = product.stock;
+  input.value = product.stock > 0 ? 1 : 0;
+
+  document.getElementById(`total-${id}`).textContent =
+    product.price.toFixed(2);
+
+  if (product.stock === 0) {
+    document.getElementById(`buy-${id}`).disabled = true;
+    document.getElementById(`buy-${id}`).textContent = "สินค้าหมด";
+  }
+
+  renderOrders();
+
+  document.getElementById("message").textContent =
+    `✅ สั่งซื้อ ${product.name} สำเร็จ จำนวน ${qty} ชิ้น`;
+
+  renderProducts();
+}
+
+function renderOrders() {
+  const container = document.getElementById("orders");
+
+  if (orders.length === 0) {
+    container.textContent = "ยังไม่มีรายการสั่งซื้อ";
+    return;
+  }
+
+  container.innerHTML = orders.map(order => `
+    <div style="
+      background:#211033;
+      border:1px solid #a100ff;
+      border-radius:10px;
+      padding:12px;
+      margin:10px auto;
+      max-width:500px;
+    ">
+      <strong>${order.name}</strong><br>
+      จำนวน ${order.qty} ชิ้น<br>
+      รวม ${order.total.toFixed(2)} บาท
+    </div>
+  `).join("");
+}
+
+document.getElementById("balance").textContent =
+  balance.toFixed(2);
+
+renderProducts();
+</script>
+
+</body>
+</html>
