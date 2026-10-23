@@ -1,0 +1,217 @@
+
+<style>
+.review-box {
+  background: #fff5fa;
+  border: 1px solid #ffd3e6;
+  border-radius: 18px;
+  padding: 20px;
+  margin: 20px 0;
+  color: #8d4668;
+}
+.review-box h2 {
+  text-align: center;
+  color: #d65c96;
+}
+.review-input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #f3bfd7;
+  border-radius: 12px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+.star-picker {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+.star-picker button {
+  border: none;
+  background: none;
+  color: #ddd;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 2px;
+}
+.star-picker button.active {
+  color: #ffb52e;
+}
+.review-submit {
+  width: 100%;
+  padding: 12px;
+  background: #f5a6cb;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.review-item {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+.review-stars {
+  color: #ffb52e;
+  margin: 6px 0;
+}
+.review-comment {
+  white-space: pre-wrap;
+}
+</style>
+
+<section class="review-box">
+  <h2>♡ รีวิวความพึงพอใจ ♡</h2>
+
+  <div style="text-align:center">
+    <div id="rating-summary">ยังไม่มีคะแนนรีวิว</div>
+    <div class="star-picker" id="starPicker">
+      <button type="button" data-star="1" aria-label="1 ดาว">★</button>
+      <button type="button" data-star="2" aria-label="2 ดาว">★</button>
+      <button type="button" data-star="3" aria-label="3 ดาว">★</button>
+      <button type="button" data-star="4" aria-label="4 ดาว">★</button>
+      <button type="button" data-star="5" aria-label="5 ดาว">★</button>
+    </div>
+    <div id="rating-hint">กดเลือกคะแนน 1–5 ดาว</div>
+  </div>
+
+  <form id="reviewForm">
+    <input
+      class="review-input"
+      id="reviewName"
+      placeholder="ชื่อของคุณ"
+      maxlength="40"
+      required
+    >
+
+    <textarea
+      class="review-input"
+      id="reviewComment"
+      placeholder="เขียนความคิดเห็นของคุณ..."
+      rows="4"
+      maxlength="1000"
+      required
+    ></textarea>
+
+    <button class="review-submit" type="submit">
+      ส่งรีวิว ♡
+    </button>
+  </form>
+
+  <h3>ความคิดเห็นจากลูกค้า</h3>
+  <div id="reviewList">ยังไม่มีรีวิว</div>
+</section>
+
+<script>
+let selectedRating = 0;
+let reviews = [];
+
+const starButtons =
+  document.querySelectorAll("#starPicker button");
+
+function chooseRating(rating) {
+  selectedRating = rating;
+
+  starButtons.forEach(button => {
+    const active = Number(button.dataset.star) <= rating;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(
+      Number(button.dataset.star) === rating
+    ));
+  });
+
+  document.getElementById("rating-hint").textContent =
+    `คุณให้คะแนน ${rating} จาก 5 ดาว`;
+}
+
+starButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    chooseRating(Number(button.dataset.star));
+  });
+});
+
+function renderReviews() {
+  const list = document.getElementById("reviewList");
+  const summary = document.getElementById("rating-summary");
+
+  if (reviews.length === 0) {
+    summary.textContent = "ยังไม่มีคะแนนรีวิว";
+    list.textContent = "ยังไม่มีรีวิว";
+    return;
+  }
+
+  const average = reviews.reduce(
+    (sum, review) => sum + review.rating, 0
+  ) / reviews.length;
+
+  summary.textContent =
+    `คะแนนเฉลี่ย ${average.toFixed(1)} / 5 · ${reviews.length} รีวิว`;
+
+  list.replaceChildren();
+
+  reviews.slice().reverse().forEach(review => {
+    const item = document.createElement("div");
+    item.className = "review-item";
+
+    const name = document.createElement("strong");
+    name.textContent = review.name;
+
+    const stars = document.createElement("div");
+    stars.className = "review-stars";
+    stars.textContent =
+      "★".repeat(review.rating) +
+      "☆".repeat(5 - review.rating);
+
+    const comment = document.createElement("p");
+    comment.className = "review-comment";
+    comment.textContent = review.comment;
+
+    const plusOne = document.createElement("div");
+    plusOne.textContent = "+1 ♡";
+
+    item.append(name, stars, comment, plusOne);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById("reviewForm")
+  .addEventListener("submit", event => {
+    event.preventDefault();
+
+    if (!selectedRating) {
+      alert("กรุณาเลือกคะแนนความพึงพอใจ");
+      return;
+    }
+
+    const name = document.getElementById("reviewName")
+      .value.trim();
+    const comment = document.getElementById("reviewComment")
+      .value.trim();
+
+    if (!name || !comment) {
+      alert("กรุณากรอกชื่อและความคิดเห็น");
+      return;
+    }
+
+    reviews.push({
+      name,
+      rating: selectedRating,
+      comment
+    });
+
+    renderReviews();
+    event.target.reset();
+    selectedRating = 0;
+    starButtons.forEach(button =>
+      button.classList.remove("active")
+    );
+    document.getElementById("rating-hint").textContent =
+      "กดเลือกคะแนน 1–5 ดาว";
+  });
+
+renderReviews();
+</script>
