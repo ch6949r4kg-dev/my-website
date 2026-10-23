@@ -1,0 +1,172 @@
+
+<script type="module">
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, query, orderBy,
+  onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+import {
+  getAuth, signInAnonymously
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
+
+// 1) นำค่าจาก Firebase Console มาใส่ตรงนี้
+const firebaseConfig = {
+  apiKey: "ใส่ค่า_apiKey",
+  authDomain: "ใส่ค่า_authDomain",
+  projectId: "ใส่ค่า_projectId",
+  appId: "ใส่ค่า_appId"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let rating = 0;
+let sending = false;
+
+const buttons = [...document.querySelectorAll("#starPicker button")];
+const form = document.getElementById("form");
+const nameInput = document.getElementById("name");
+const commentInput = document.getElementById("comment");
+const hint = document.getElementById("hint");
+const submitButton = form.querySelector('[type="submit"]');
+const list = document.getElementById("list");
+
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    rating = Number(btn.dataset.star);
+    buttons.forEach(b => {
+      const active = Number(b.dataset.star) <= rating;
+      b.classList.toggle("active", active);
+      b.setAttribute("aria-pressed",
+        String(Number(b.dataset.star) === rating));
+    });
+    hint.textContent = `เลือกแล้ว ${rating} ดาว ♡`;
+  });
+});
+
+function render(reviews) {
+  document.getElementById("count").textContent = reviews.length;
+  document.getElementById("listCount").textContent =
+    `${reviews.length} รีวิว`;
+
+  const average = reviews.length
+    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+    : null;
+
+  document.getElementById("average").textContent =
+    average === null ? "— ⭐" : average.toFixed(1) + " ⭐";
+
+  list.replaceChildren();
+
+  if (!reviews.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "🐰💗 ยังไม่มีรีวิวเลยค่ะ มาเป็นรีวิวแรกกันนะ ♡";
+    list.append(empty);
+    return;
+  }
+
+  reviews.forEach(r => {
+    const item = document.createElement("div");
+    item.className = "item";
+
+    const name = document.createElement("div");
+    name.className = "item-name";
+    name.textContent = r.name + " 🎀";
+
+    const stars = document.createElement("div");
+    stars.className = "item-stars";
+    stars.textContent = "★".repeat(r.rating) + "☆".repeat(5-r.rating);
+
+    const comment = document.createElement("div");
+    comment.className = "comment";
+    comment.textContent = r.comment;
+
+    item.append(name, stars, comment);
+    list.append(item);
+  });
+}
+
+// ป้องกันการส่งรีวิวจนกว่าฐานข้อมูลจะเชื่อมต่อสำเร็จ
+submitButton.disabled = true;
+hint.textContent = "กำลังเชื่อมต่อระบบรีวิว...";
+
+signInAnonymously(auth).then(() => {
+  const reviewsQuery = query(
+    collection(db, "reviews"),
+    orderBy("createdAt", "desc")
+  );
+
+  // อัปเดตอัตโนมัติเมื่อมีรีวิวใหม่จากทุกอุปกรณ์
+  onSnapshot(reviewsQuery, snapshot => {
+    const reviews = snapshot.docs.map(doc => doc.data())
+      .filter(r =>
+        typeof r.name === "string" &&
+        typeof r.comment === "string" &&
+        Number.isInteger(r.rating) &&
+        r.rating >= 1 && r.rating <= 5
+      );
+
+    render(reviews);
+    submitButton.disabled = false;
+    hint.textContent = "แตะดาวเพื่อให้คะแนน ♡";
+  }, error => {
+    console.error(error);
+    hint.textContent = "โหลดรีวิวไม่สำเร็จ กรุณาตรวจสอบการตั้งค่าฐานข้อมูล";
+  });
+}).catch(error => {
+  console.error(error);
+  hint.textContent = "เชื่อมต่อไม่ได้ กรุณาตรวจสอบ Firebase Authentication";
+});
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (sending) return;
+
+  const name = nameInput.value.trim();
+  const comment = commentInput.value.trim();
+
+  if (!rating) {
+    alert("เลือกดาวก่อนนะคะ ♡");
+    return;
+  }
+  if (!name || !comment) {
+    alert("กรอกชื่อและความคิดเห็นให้ครบก่อนนะคะ 💗");
+    return;
+  }
+  if (name.length > 40 || comment.length > 1000) {
+    alert("ชื่อหรือความคิดเห็นยาวเกินกำหนดค่ะ");
+    return;
+  }
+
+  sending = true;
+  submitButton.disabled = true;
+  submitButton.textContent = "กำลังส่งรีวิว...";
+
+  try {
+    await addDoc(collection(db, "reviews"), {
+      name,
+      comment,
+      rating,
+      createdAt: serverTimestamp()
+    });
+
+    form.reset();
+    rating = 0;
+    buttons.forEach(b => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+    });
+    hint.textContent = "ส่งรีวิวสำเร็จแล้วค่ะ 💗";
+  } catch (error) {
+    console.error(error);
+    alert("ส่งรีวิวไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า Firebase");
+  } finally {
+    sending = false;
+    submitButton.disabled = false;
+    submitButton.textContent = "ส่งรีวิวด้วยความรัก ♡";
+  }
+});
+</script>
