@@ -1,282 +1,172 @@
 
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ffe8f3">
-<title>Nongbiw Credit Review</title>
-<style>
-*{box-sizing:border-box}
-:root{--pink:#ed91bc;--deep:#cf669b;--text:#a56889;--gold:#ffc45b}
-body{
- margin:0;padding:20px 13px 40px;
- font-family:Arial,Tahoma,sans-serif;color:var(--text);
- background:radial-gradient(ellipse at top left,#ffe0ef,transparent 45%),
- radial-gradient(ellipse at bottom right,#eee2ff,transparent 40%),
- linear-gradient(145deg,#fffafd,#ffedf6 55%,#fff4fb);
- min-height:100vh
-}
-.wrap{max-width:520px;margin:auto}
-header,.review{
- position:relative;overflow:hidden;
- background:rgba(255,255,255,.88);
- border:1px solid #fff;border-radius:28px;
- padding:23px 16px;margin-bottom:17px;
- box-shadow:0 10px 30px #d78ab51e
-}
-header{text-align:center;background:linear-gradient(145deg,#fffafd,#ffe7f3 65%,#f0e8ff)}
-.official{
- display:inline-block;background:#fff;border:1px solid #f9d9e9;
- border-radius:30px;padding:7px 13px;font-size:11px;
- letter-spacing:2px;color:#bd7b9e
-}
-.brand{
- font-size:clamp(35px,9vw,47px);font-weight:900;
- color:#df79ad;margin:12px 0 3px;
- text-shadow:2px 3px 0 #fff,0 5px 14px #e9a4c7
-}
-.subtitle{font-size:12px;letter-spacing:4px;color:#b58acb}
-.bunny{
- width:95px;height:83px;margin:19px auto 14px;
- display:flex;align-items:center;justify-content:center;
- background:linear-gradient(145deg,#fff,#fff0f7);
- border:2px solid white;border-radius:45% 45% 42% 42%;
- box-shadow:0 5px 0 #f6d9e8,0 8px 17px #e4a3c32b;
- font-size:48px;position:relative;transform:rotate(-3deg)
-}
-.bunny:after{content:"🎀";position:absolute;top:-18px;right:-11px;font-size:28px}
-.decoration{font-size:18px;letter-spacing:4px;color:#e69bc0;margin:13px 0 20px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.stat{
- background:#fff;border:1px solid #f8deeb;border-radius:21px;
- padding:16px 5px;box-shadow:0 5px 14px #e7a4c21c
-}
-.stat-icon{font-size:21px}
-.stat-label{font-size:10px;letter-spacing:1px;color:#b88aa5;margin-top:5px}
-.stat-value{font-size:28px;font-weight:bold;color:#dc78a8;margin-top:6px;overflow-wrap:anywhere}
-h3{text-align:center;font-size:20px;color:#cf6f9f;margin:0 0 8px}
-.intro{text-align:center;font-size:12px;color:#bd91aa;margin:0 0 20px}
-.stars{display:flex;justify-content:center;gap:6px;margin:15px 0 5px}
-.stars button{
- width:47px;height:48px;padding:0;background:#fff7fb;
- border:1px solid #f7dfeb;border-radius:15px;
- font-size:29px;color:#e9dce4;cursor:pointer
-}
-.stars button.active{color:var(--gold);background:#fff9e9;border-color:#ffe3a5}
-.hint{text-align:center;font-size:12px;color:#bf92ac;min-height:19px;margin:10px 0 18px}
-label{display:block;font-size:13px;margin:14px 0 6px 3px;color:#b76c94}
-input,textarea{
- display:block;width:100%;padding:13px 14px;margin:0;
- border:1px solid #f1d4e3;border-radius:15px;
- background:#fffafd;font:inherit;font-size:14px;color:#9e6383;outline:none
-}
-input:focus,textarea:focus{border-color:#e7a0c3;box-shadow:0 0 0 3px #fce6f1}
-input::placeholder,textarea::placeholder{color:#cba8bb}
-textarea{resize:vertical;min-height:95px}
-.submit{
- width:100%;margin-top:15px;padding:14px;border:0;border-radius:17px;
- color:white;font-size:15px;font-weight:bold;
- background:linear-gradient(100deg,#f3a8cb,#df83b4 55%,#c7a5ed);
- box-shadow:0 6px 15px #dc91bb44;cursor:pointer
-}
-.review-heading{
- display:flex;align-items:center;justify-content:space-between;
- gap:8px;margin:25px 0 12px;font-size:15px;font-weight:bold;color:#ce709f
-}
-.review-heading small{font-size:11px;font-weight:normal;color:#c5a0b6}
-.item{
- background:linear-gradient(135deg,#fffafd,#fff1f8);
- border:1px solid #f6dce9;padding:14px;border-radius:18px;
- margin-top:10px;overflow-wrap:anywhere
-}
-.item-name{font-weight:bold;font-size:14px;color:#b86691}
-.item-stars{color:#ffbd59;font-size:17px;letter-spacing:2px;margin:8px 0}
-.comment{font-size:13px;line-height:1.8;color:#a87994;white-space:pre-wrap}
-.empty{
- padding:23px 10px;border:1px dashed #edc7dc;border-radius:18px;
- background:#fff9fc;text-align:center;color:#c9a4b9;font-size:13px;line-height:2
-}
-.footer{text-align:center;font-size:11px;color:#c19ab3;padding:5px 8px;line-height:2}
-.sparkles{text-align:center;color:#e5a0c0;letter-spacing:6px;margin:8px 0 16px}
-@keyframes twinkle{from{opacity:.5;transform:scale(.9)}to{opacity:1;transform:scale(1.1)}}
-@media(max-width:360px){body{padding:12px 9px 30px}.stars{gap:4px}.stars button{width:43px;height:44px;font-size:26px}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
-</head>
-<body>
-<div class="wrap">
-<header>
- <div class="official">♡ OFFICIAL CREDIT ♡</div>
- <div class="brand">Nongbiw 🎀</div>
- <div class="subtitle">CREDIT · REVIEW</div>
- <div class="bunny" aria-label="กระต่ายน่ารัก">🐰</div>
- <div class="decoration">୨୧ ♡ ✧ 💗 ✧ ♡ ୨୧</div>
- <div class="stats">
-  <div class="stat">
-   <div class="stat-icon">⭐</div>
-   <div class="stat-label">RATING AVERAGE</div>
-   <div class="stat-value" id="average">— ⭐</div>
-  </div>
-  <div class="stat">
-   <div class="stat-icon">💌</div>
-   <div class="stat-label">TOTAL COMMENTS</div>
-   <div class="stat-value" id="count">0</div>
-  </div>
- </div>
-</header>
+<script type="module">
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
+import {
+  getFirestore, collection, addDoc, query, orderBy,
+  onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+import {
+  getAuth, signInAnonymously
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
 
-<section class="review">
- <h3>♡ รีวิวความพึงพอใจ ♡</h3>
- <p class="intro">ทุกคำรีวิวมีความหมายกับเรานะคะ ✧</p>
+// 1) นำค่าจาก Firebase Console มาใส่ตรงนี้
+const firebaseConfig = {
+  apiKey: "ใส่ค่า_apiKey",
+  authDomain: "ใส่ค่า_authDomain",
+  projectId: "ใส่ค่า_projectId",
+  appId: "ใส่ค่า_appId"
+};
 
- <form id="form">
-  <label>ให้คะแนนความพึงพอใจ</label>
-  <div class="stars" id="starPicker">
-   <button type="button" data-star="1" aria-label="1 ดาว">★</button>
-   <button type="button" data-star="2" aria-label="2 ดาว">★</button>
-   <button type="button" data-star="3" aria-label="3 ดาว">★</button>
-   <button type="button" data-star="4" aria-label="4 ดาว">★</button>
-   <button type="button" data-star="5" aria-label="5 ดาว">★</button>
-  </div>
-  <p class="hint" id="hint" aria-live="polite">แตะดาวเพื่อให้คะแนน ♡</p>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-  <label for="name">🎀 ชื่อของคุณ</label>
-  <input id="name" maxlength="40" placeholder="พิมพ์ชื่อเล่นได้เลย..." required>
+let rating = 0;
+let sending = false;
 
-  <label for="comment">💗 ความคิดเห็น</label>
-  <textarea id="comment" rows="3" maxlength="1000"
-   placeholder="เขียนความคิดเห็นน่ารัก ๆ ได้เลย..." required></textarea>
+const buttons = [...document.querySelectorAll("#starPicker button")];
+const form = document.getElementById("form");
+const nameInput = document.getElementById("name");
+const commentInput = document.getElementById("comment");
+const hint = document.getElementById("hint");
+const submitButton = form.querySelector('[type="submit"]');
+const list = document.getElementById("list");
 
-  <button class="submit" type="submit">ส่งรีวิวด้วยความรัก ♡</button>
- </form>
-
- <div class="review-heading">
-  <span>💌 ความคิดเห็นจากลูกค้า</span>
-  <small id="listCount">0 รีวิว</small>
- </div>
- <div id="list" aria-live="polite"></div>
-</section>
-
-<div class="sparkles">✧ ♡ 🎀 ♡ ✧</div>
-<div class="footer">Made with love ♡ Nongbiw Credit Review<br>ขอบคุณสำหรับทุกความไว้วางใจนะคะ 💗</div>
-</div>
-
-<script>
-"use strict";
-
-let rating=0;
-let reviews=[];
-const key="nongbiw-reviews-demo";
-
-try{
- const saved=JSON.parse(localStorage.getItem(key)||"[]");
- if(Array.isArray(saved)){
-  reviews=saved.filter(r=>
-   r && typeof r.name==="string" &&
-   typeof r.comment==="string" &&
-   Number.isInteger(r.rating) && r.rating>=1 && r.rating<=5
-  );
- }
-}catch(e){reviews=[];}
-
-const buttons=[...document.querySelectorAll("#starPicker button")];
-const form=document.getElementById("form");
-const nameInput=document.getElementById("name");
-const commentInput=document.getElementById("comment");
-const hint=document.getElementById("hint");
-
-buttons.forEach(btn=>{
- btn.addEventListener("click",()=>{
-  rating=Number(btn.dataset.star);
-  buttons.forEach(b=>{
-   const active=Number(b.dataset.star)<=rating;
-   b.classList.toggle("active",active);
-   b.setAttribute("aria-pressed",String(active&&Number(b.dataset.star)===rating));
+buttons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    rating = Number(btn.dataset.star);
+    buttons.forEach(b => {
+      const active = Number(b.dataset.star) <= rating;
+      b.classList.toggle("active", active);
+      b.setAttribute("aria-pressed",
+        String(Number(b.dataset.star) === rating));
+    });
+    hint.textContent = `เลือกแล้ว ${rating} ดาว ♡`;
   });
-  hint.textContent=`เลือกแล้ว ${rating} ดาว ♡`;
- });
 });
 
-function render(){
- document.getElementById("count").textContent=reviews.length;
- document.getElementById("listCount").textContent=`${reviews.length} รีวิว`;
+function render(reviews) {
+  document.getElementById("count").textContent = reviews.length;
+  document.getElementById("listCount").textContent =
+    `${reviews.length} รีวิว`;
 
- const average=reviews.length
-  ?reviews.reduce((sum,r)=>sum+r.rating,0)/reviews.length
-  :null;
- document.getElementById("average").textContent=
-  average===null?"— ⭐":average.toFixed(1)+" ⭐";
+  const average = reviews.length
+    ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+    : null;
 
- const list=document.getElementById("list");
- list.replaceChildren();
+  document.getElementById("average").textContent =
+    average === null ? "— ⭐" : average.toFixed(1) + " ⭐";
 
- if(!reviews.length){
-  const empty=document.createElement("div");
-  empty.className="empty";
-  empty.innerHTML="<div style='font-size:35px'>🐰💗</div>ยังไม่มีรีวิวเลยค่ะ<br>มาเป็นรีวิวแรกกันนะ ♡";
-  list.append(empty);
-  return;
- }
+  list.replaceChildren();
 
- reviews.slice().reverse().forEach(r=>{
-  const item=document.createElement("div");
-  item.className="item";
+  if (!reviews.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "🐰💗 ยังไม่มีรีวิวเลยค่ะ มาเป็นรีวิวแรกกันนะ ♡";
+    list.append(empty);
+    return;
+  }
 
-  const name=document.createElement("div");
-  name.className="item-name";
-  name.textContent=r.name+" 🎀";
+  reviews.forEach(r => {
+    const item = document.createElement("div");
+    item.className = "item";
 
-  const stars=document.createElement("div");
-  stars.className="item-stars";
-  stars.textContent="★".repeat(r.rating)+"☆".repeat(5-r.rating);
+    const name = document.createElement("div");
+    name.className = "item-name";
+    name.textContent = r.name + " 🎀";
 
-  const comment=document.createElement("div");
-  comment.className="comment";
-  comment.textContent=r.comment;
+    const stars = document.createElement("div");
+    stars.className = "item-stars";
+    stars.textContent = "★".repeat(r.rating) + "☆".repeat(5-r.rating);
 
-  item.append(name,stars,comment);
-  list.append(item);
- });
+    const comment = document.createElement("div");
+    comment.className = "comment";
+    comment.textContent = r.comment;
+
+    item.append(name, stars, comment);
+    list.append(item);
+  });
 }
 
-form.addEventListener("submit",e=>{
- e.preventDefault();
+// ป้องกันการส่งรีวิวจนกว่าฐานข้อมูลจะเชื่อมต่อสำเร็จ
+submitButton.disabled = true;
+hint.textContent = "กำลังเชื่อมต่อระบบรีวิว...";
 
- const name=nameInput.value.trim();
- const comment=commentInput.value.trim();
+signInAnonymously(auth).then(() => {
+  const reviewsQuery = query(
+    collection(db, "reviews"),
+    orderBy("createdAt", "desc")
+  );
 
- if(!rating){
-  alert("เลือกดาวก่อนนะคะ ♡");
-  return;
- }
- if(!name||!comment){
-  alert("กรอกชื่อและความคิดเห็นให้ครบก่อนนะคะ 💗");
-  return;
- }
+  // อัปเดตอัตโนมัติเมื่อมีรีวิวใหม่จากทุกอุปกรณ์
+  onSnapshot(reviewsQuery, snapshot => {
+    const reviews = snapshot.docs.map(doc => doc.data())
+      .filter(r =>
+        typeof r.name === "string" &&
+        typeof r.comment === "string" &&
+        Number.isInteger(r.rating) &&
+        r.rating >= 1 && r.rating <= 5
+      );
 
- const review={name,rating,comment};
-
- try{
-  const next=[...reviews,review];
-  localStorage.setItem(key,JSON.stringify(next));
-  reviews=next;
- }catch(err){
-  alert("บันทึกรีวิวไม่สำเร็จ ลองตรวจสอบพื้นที่จัดเก็บของเบราว์เซอร์นะคะ");
-  return;
- }
-
- form.reset();
- rating=0;
- buttons.forEach(b=>{
-  b.classList.remove("active");
-  b.setAttribute("aria-pressed","false");
- });
- hint.textContent="แตะดาวเพื่อให้คะแนน ♡";
- render();
+    render(reviews);
+    submitButton.disabled = false;
+    hint.textContent = "แตะดาวเพื่อให้คะแนน ♡";
+  }, error => {
+    console.error(error);
+    hint.textContent = "โหลดรีวิวไม่สำเร็จ กรุณาตรวจสอบการตั้งค่าฐานข้อมูล";
+  });
+}).catch(error => {
+  console.error(error);
+  hint.textContent = "เชื่อมต่อไม่ได้ กรุณาตรวจสอบ Firebase Authentication";
 });
 
-render();
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (sending) return;
+
+  const name = nameInput.value.trim();
+  const comment = commentInput.value.trim();
+
+  if (!rating) {
+    alert("เลือกดาวก่อนนะคะ ♡");
+    return;
+  }
+  if (!name || !comment) {
+    alert("กรอกชื่อและความคิดเห็นให้ครบก่อนนะคะ 💗");
+    return;
+  }
+  if (name.length > 40 || comment.length > 1000) {
+    alert("ชื่อหรือความคิดเห็นยาวเกินกำหนดค่ะ");
+    return;
+  }
+
+  sending = true;
+  submitButton.disabled = true;
+  submitButton.textContent = "กำลังส่งรีวิว...";
+
+  try {
+    await addDoc(collection(db, "reviews"), {
+      name,
+      comment,
+      rating,
+      createdAt: serverTimestamp()
+    });
+
+    form.reset();
+    rating = 0;
+    buttons.forEach(b => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+    });
+    hint.textContent = "ส่งรีวิวสำเร็จแล้วค่ะ 💗";
+  } catch (error) {
+    console.error(error);
+    alert("ส่งรีวิวไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า Firebase");
+  } finally {
+    sending = false;
+    submitButton.disabled = false;
+    submitButton.textContent = "ส่งรีวิวด้วยความรัก ♡";
+  }
+});
 </script>
-</body>
-</html>
